@@ -61,12 +61,15 @@ filebeat.config.modules:
 
 # ======================= Elasticsearch template setting =======================
 
-setup.template.settings:
-  index.number_of_shards: 1
+#setup.template.settings:
+#  index.number_of_shards: 1
   #index.codec: best_compression
   #_source.enabled: false
 
-
+setup.template.enabled: false
+setup.ilm.enabled: false
+setup.ilm.rollover_alias: "rollover"
+setup.ilm.pattern: "{now/d}-000001"
 # ================================== General ===================================
 
 # The name of the shipper that publishes the network data. It can be used to group
@@ -135,7 +138,8 @@ output.elasticsearch:
 
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
-
+  index: "rest-api-port-8080-%{+yyyy.MM.dd}"
+  pipeline: "parse_rest_api_message_json"
   # Authentication credentials - either API key or username/password.
   #api_key: "id:api_key"
   #username: "elastic"
